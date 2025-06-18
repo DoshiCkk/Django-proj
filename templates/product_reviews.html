@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Отзывы о {{ product.title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2>Отзывы о "{{ product.title }}"</h2>
+
+    {% if reviews %}
+        <div class="mt-3 mb-4">
+            <h5>Средний рейтинг: {{ average_rating|floatformat:1 }} из 5</h5>
+
+        </div>
+
+        <ul class="list-group">
+            {% for review in reviews %}
+            <li class="list-group-item">
+                <strong>{{ review.user.username }}</strong> — 
+                <span class="text-warning">
+                    {% for i in "12345"|make_list %}
+                        {% if forloop.counter <= review.rating %}
+                            ★
+                        {% else %}
+                            ☆
+                        {% endif %}
+                    {% endfor %}
+                </span><br>
+                {{ review.text }}
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="mt-4">Пока нет отзывов.</p>
+    {% endif %}
+</div>
+{% endblock %}

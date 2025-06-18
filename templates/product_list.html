@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Список товаров{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4 fw-bold border-bottom pb-2">🛍️ Все товары</h1>
+
+  {% if products %}
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for product in products %}
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+        {% if product.image %}
+        <div class="ratio ratio-4x3">
+          <img src="{{ product.image.url }}" class="card-img-top object-fit-cover" alt="{{ product.title }}">
+        </div>
+        {% else %}
+        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+          <span class="text-muted">Нет изображения</span>
+        </div>
+        {% endif %}
+
+        <div class="card-body d-flex flex-column p-4">
+          <h5 class="card-title fw-semibold mb-2">{{ product.title }}</h5>
+          <p class="card-text text-muted small flex-grow-1">{{ product.description|truncatechars:80 }}</p>
+          <p class="fw-bold text-dark mb-3">{{ product.price }} тг</p>
+
+          <div class="d-grid gap-2 mt-auto">
+            <a href="{% url 'product-reviews' product.id %}" class="btn btn-outline-primary btn-sm">Отзывы</a>
+            <a href="{% url 'product-review' product.id %}" class="btn btn-outline-success btn-sm">Оставить отзыв</a>
+            <button class="btn btn-success add-to-cart-btn btn-sm" data-product-id="{{ product.id }}">🛒 В корзину</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center mt-5" role="alert">
+    Пока что нет доступных товаров.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

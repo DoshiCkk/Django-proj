@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="mb-5">
+    <h2 class="fw-bold mb-3">Личный кабинет</h2>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="p-4 border rounded-4 shadow-sm bg-light">
+          <h5 class="mb-3">Данные профиля</h5>
+          <p class="mb-1"><strong>Роль:</strong> {{ user.role|title }}</p>
+          <p class="mb-1"><strong>Имя пользователя:</strong> {{ user.username }}</p>
+          <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+          <p class="mb-1"><strong>Телефон:</strong> {{ user.phone }}</p>
+          <p class="mb-3"><strong>Адрес:</strong> {{ user.address }}</p>
+          <div class="d-flex flex-column gap-2">
+            <a href="{% url 'profile-edit' %}" class="btn btn-outline-primary">Редактировать</a>
+            <a href="{% url 'account-settings' %}" class="btn btn-outline-secondary">Настройки аккаунта</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="p-4 border rounded-4 shadow-sm">
+          <h5 class="mb-3">Последние заказы</h5>
+          {% if order %}
+            <ul class="list-group list-group-flush">
+              {% for o in order|slice:":3" %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Заказ №{{ o.id }}</strong><br>
+                  <small class="text-muted">{{ o.created_at|date:"d.m.Y H:i" }}</small>
+                </div>
+                <span class="fw-bold">{{ o.total_price }} тг</span>
+              </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted">У вас пока нет заказов.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if user.role == 'seller' %}
+  <div class="mb-5">
+    <h4 class="fw-bold mb-3">Мои товары</h4>
+    <div class="d-flex justify-content-end mb-2">
+      <a href="{% url 'add-product' %}" class="btn btn-success">Добавить товар</a>
+    </div>
+    {% if user_products %}
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Название</th>
+              <th class="text-end">Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in user_products %}
+            <tr>
+              <td>{{ product.title }}</td>
+              <td class="text-end">
+                <a href="{% url 'delete-product' product.id %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-muted">Вы ещё не добавили товары.</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="text-end">
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-danger">Выйти из аккаунта</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

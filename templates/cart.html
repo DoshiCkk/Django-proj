@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Корзина</h1>
+
+{% if cart_items %}
+<table class="table table-bordered align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Товар</th>
+            <th>Количество</th>
+            <th>Цена за штуку</th>
+            <th>Итого</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item.product.title }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.product.price }} тг</td>
+            <td>{{ item.total_price }} тг</td>
+            <td>
+                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-sm btn-danger">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p class="fw-bold fs-5">Итого: {{ total_price }} тг</p>
+
+<form method="post" action="{% url 'clear_cart' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-warning">Очистить корзину</button>
+</form>
+
+<form method="post" action="{% url 'create_order' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary mt-3">Оформить заказ</button>
+</form>
+
+{% else %}
+<p class="alert alert-info">Корзина пуста</p>
+{% endif %}
+{% endblock %}
