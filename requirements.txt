@@ -3,3 +3,5 @@ psycopg2-binary
 openpyxl
 Pillow
 django-widget-tweaks
+python-dotenv
+dj_database_url
