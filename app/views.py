@@ -20,17 +20,6 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     return render(request, 'base.html')
 
-
-def delete_user(request, username):
-    User = get_user_model()
-    try:
-        user = User.objects.get(username=username)
-        user.delete()
-        return HttpResponse(f"Пользователь {username} удалён.")
-    except User.DoesNotExist:
-        return HttpResponse("Пользователь не найден.")
-
-
 #Корзина
 
 @login_required
