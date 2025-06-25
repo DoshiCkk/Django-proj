@@ -5,7 +5,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 CSRF_TRUSTED_ORIGINS = [
-    f"https://{os.getenv('RENDER_DOMAIN')}"
+    "https://django-proj-pp6x.onrender.com/"
 ]
 
 SECRET_KEY = 'django-insecure-4qj$w8g49d1b39j0#p4xvsb(qtdsnwf4c=&vu*j783r1pns+9l'
