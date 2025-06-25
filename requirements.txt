@@ -6,3 +6,4 @@ django-widget-tweaks
 python-dotenv
 dj_database_url
 whitenoise
+gunicorn
