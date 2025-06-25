@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: django-proj
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn diplom.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: KOKJ_SITE
+          property: connectionString
+      - key: SECRET_KEY
+        value: dn0zctd0nun2ob*=%wkom3#sj#_4m&v+*k%03+qsuh$(okgncb
+      - key: DEBUG
+        value: "False"

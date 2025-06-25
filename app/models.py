@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 
 class Client(AbstractUser):
-    email = models.EmailField(unique=True)
+    email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=11, blank=True)
     address = models.TextField(blank=True)
     ROLE_CHOICES = (
