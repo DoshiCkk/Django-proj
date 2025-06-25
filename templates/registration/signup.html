@@ -11,19 +11,37 @@
                     <form method="post">
                         {% csrf_token %}
 
+                        {# Общие ошибки формы, типа duplicate username #}
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
                         <div class="form-group mb-3">
                             {{ form.username.label_tag }}
                             {{ form.username|add_class:"form-control" }}
+                            {% for error in form.username.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                            {% endfor %}
                         </div>
 
                         <div class="form-group mb-3">
                             {{ form.password1.label_tag }}
                             {{ form.password1|add_class:"form-control" }}
+                            {% for error in form.password1.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                            {% endfor %}
                         </div>
 
                         <div class="form-group mb-3">
                             {{ form.password2.label_tag }}
                             {{ form.password2|add_class:"form-control" }}
+                            {% for error in form.password2.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                            {% endfor %}
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
